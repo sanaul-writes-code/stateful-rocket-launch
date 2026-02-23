@@ -67,7 +67,7 @@ class _CounterWidgetState extends State<CounterWidget> {
           Center(
             child: Container(
               color: Colors.lightBlueAccent,
-              child: Text('$_counter', style: TextStyle(fontSize: 50.0, color: _counterColor())),
+              child: Text(_counter == 100? 'LIFTOFF!' : '$_counter', style: TextStyle(fontSize: 50.0, color: _counterColor())),
             ),
           ),
           Slider(
