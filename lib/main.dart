@@ -9,9 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Rocket Launch Controller',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: CounterWidget(),
     );
   }
@@ -26,22 +24,26 @@ class _CounterWidgetState extends State<CounterWidget> {
   // set counter value
   int _counter = 0;
 
+  void increment() {
+    setState(() {
+      _counter += 1;
+      if (_counter > 100) {
+        _counter = 100;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Rocket Launch Controller'),
-      ),
+      appBar: AppBar(title: const Text('Rocket Launch Controller')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: Container(
               color: Colors.blue,
-              child: Text(
-                '$_counter',
-                style: const TextStyle(fontSize: 50.0),
-              ),
+              child: Text('$_counter', style: const TextStyle(fontSize: 50.0)),
             ),
           ),
           Slider(
@@ -56,6 +58,8 @@ class _CounterWidgetState extends State<CounterWidget> {
             activeColor: Colors.blue,
             inactiveColor: Colors.red,
           ),
+          SizedBox(height: 8),
+          ElevatedButton(onPressed: increment, child: Text('Ignite')),
         ],
       ),
     );
