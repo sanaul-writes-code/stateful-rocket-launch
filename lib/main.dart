@@ -30,6 +30,9 @@ class _CounterWidgetState extends State<CounterWidget> {
       if (_counter > 100) {
         _counter = 100;
       }
+      if (_counter == 100) {
+        _showSuccessPopup();
+      }
     });
   }
 
@@ -57,6 +60,46 @@ class _CounterWidgetState extends State<CounterWidget> {
     return Colors.green;
   }
 
+  Future<void> _showSuccessPopup() {
+  return showGeneralDialog(
+    context: context,
+    barrierDismissible: false,
+    barrierLabel: 'Success Dialog',
+    transitionDuration: const Duration(milliseconds: 400),
+    pageBuilder: (context, animation, secondaryAnimation) {
+      return Center(
+        child: AlertDialog(
+          title: const Text('Success!'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Your rocket has lifted! 🚀'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Dismiss'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    },
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return ScaleTransition(
+        scale: CurvedAnimation(
+          parent: animation,
+          curve: Curves.elasticOut,
+        ),
+        child: child,
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,9 +110,13 @@ class _CounterWidgetState extends State<CounterWidget> {
           Center(
             child: Container(
               color: Colors.lightBlueAccent,
-              child: Text(_counter == 100? 'LIFTOFF!' : '$_counter', style: TextStyle(fontSize: 50.0, color: _counterColor())),
+              child: Text(
+                _counter == 100 ? 'LIFTOFF!' : '$_counter',
+                style: TextStyle(fontSize: 50.0, color: _counterColor()),
+              ),
             ),
           ),
+          SizedBox(height: 120),
           Slider(
             min: 0,
             max: 100,
@@ -77,6 +124,9 @@ class _CounterWidgetState extends State<CounterWidget> {
             onChanged: (double value) {
               setState(() {
                 _counter = value.toInt();
+                if (_counter == 100) {
+                  _showSuccessPopup();
+                }
               });
             },
             activeColor: Colors.blue,
